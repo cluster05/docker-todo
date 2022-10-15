@@ -21,8 +21,11 @@ WORKDIR /app
 
 COPY --from=build /app/server /app/
 
-ENV ENV=prod PORT=3000 ClientAppURL=http://localhost:8080 
-ENV MongoDNS=mongodb://mongodb:27017 MongoDB=todo
+ENV ENV=$ENV 
+ENV PORT=$PORT 
+ENV ClientAppURL=$ClientAppURL 
+ENV MongoDNS=$MongoDNS
+ENV MongoDB=$MongoDB
 
 EXPOSE 3000
 

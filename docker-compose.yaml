@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo
+    volumes:
+      - data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=todo_db_username
+      - MONGO_INITDB_ROOT_PASSWORD=todo_db_password
+
+  server:
+    build: ./server
+    ports: 
+      - '3000:3000'
+    environment:
+      - ENV=prod
+      - PORT=3000
+      - ClientAppURL=http://localhost:8080
+      - MongoDNS=mongodb://todo_db_username:todo_db_password@mongodb:27017
+      - MongoDB=todo
+    depends_on:
+      - mongodb
+  
+  client:
+    build: ./client
+    ports:
+      - '8080:80'
+    depends_on:
+      - server
+volumes:
+  data:
