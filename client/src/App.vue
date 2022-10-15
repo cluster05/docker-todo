@@ -6,7 +6,7 @@
                 <h2 class="m-2 ml-4 text-lg text-gray-700 font-bold">Todo List</h2>
             </div>
             <div class="p-4 flex items-center">
-                <input type="text" name="title" id="title" placeholder="add new task" v-model="title"
+                <input type="text" name="title" id="title" placeholder="add new task" v-model="title" maxlength="35"
                     @keydown.enter="createTodo" class="w-full px-4 py-2 rounded-md border focus:outline-none">
                 <button class="ml-4 p-2 bg-orange-300 rounded" @click="createTodo">
                     <img src="@/assets/close.svg" class="w-5 h-5 rotate-45" alt="menu">
@@ -64,6 +64,10 @@ export default {
             try {
                 if (this.title.trim() == "") {
                     this.title = ""
+                    return
+                }
+                if(this.title.trim().length > 35){
+                    alert("title should contain only 35 letter")
                     return
                 }
                 const payload = {

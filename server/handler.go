@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -34,6 +35,15 @@ func InitHandler(router *gin.Engine, client *mongo.Client) {
 	router.POST("todo", func(ctx *gin.Context) {
 
 		var createTodoDTO CreateTodoDTO
+
+		if len(strings.TrimSpace(createTodoDTO.Title)) > 35 {
+			ctx.JSON(http.StatusBadRequest, Error{
+				Status:  http.StatusBadRequest,
+				Message: http.StatusText(http.StatusBadRequest),
+				Error:   "title length should be less than 35 charactor",
+			})
+			return
+		}
 
 		if err := ctx.BindJSON(&createTodoDTO); err != nil {
 			ctx.JSON(http.StatusBadRequest, Error{
